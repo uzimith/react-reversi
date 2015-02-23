@@ -10,7 +10,12 @@ module.exports =
 class Application extends React.Component
   render: =>
     jade.compile("""
-      h1 リバーシ
-      Board
+      header.navbar.navbar-default.navbar-static-top
+        .container
+          .navbar-header
+            a.navbar-brand(href="/") Reversi
+      .container
+        FluxComponent(flux=flux connectToStores=['board'])
+          Board
     """)(_.assign(@, @props, @state))
 
