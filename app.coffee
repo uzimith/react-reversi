@@ -1,4 +1,4 @@
-window.React = require('react')
+React = require('react')
 jade = require('react-jade')
 _ = require('lodash')
 Application = require('./components/Application.coffee')
