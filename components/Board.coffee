@@ -32,5 +32,5 @@ class Board extends React.Component
                     Grid(grid=col flux=flux)
     """)(_.assign(@, @props, @state))
   startGame: =>
-    socket.emit('action', action: "startGame", args: null)
-    @props.flux.getActions("game").startGame()
+    socket.emit('action', action: "startGame", args: [2])
+    @props.flux.getActions("game").startGame(2)

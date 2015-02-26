@@ -3,8 +3,8 @@ socket = require('socket.io-client')()
 
 module.exports =
 class GameActions extends Actions
-  startGame: ->
-    null
+  startGame: (player)->
+    player
   endGame: ->
     null
   giveupGame: ->

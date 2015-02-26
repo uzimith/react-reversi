@@ -13,14 +13,15 @@ class BoardStore extends Store
     @register(gameActions.startGame, @handleNewGame)
     @num = 8
     @state =
-      player: 2,
+      player: 0,
       player_trait: {1: '◯', 2: '●'},
       scores: {}
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         {row: row, col: col, next: false, piece: null}
 
-  handleNewGame: ->
+  handleNewGame: (player) ->
+    @setState player: player
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         piece = null
@@ -29,7 +30,9 @@ class BoardStore extends Store
         if (row is 3 and col is 4) or (row is 4 and col is 3)
           piece = {player: 2}
         {row: row, col: col, next: false, piece: piece}
-    @handleNextTurn()
+    @calculateScores()
+    @searchNextPutableGrid(player)
+
   handleNewPiece: (grid) ->
     # add piece
     grids = @state.grids
@@ -55,10 +58,16 @@ class BoardStore extends Store
 
     # update
     @setState grids: grids
-    @handleNextTurn()
+    @calculateScores()
+    next_player = @changeToNextPlayer()
+    @searchNextPutableGrid(next_player)
 
   handleNextTurn: ->
-    # calculate score
+    # change to next player
+
+    # search next putable grid
+
+  calculateScores: ->
     scores = {}
     for rows in @state.grids
       for grid in rows
@@ -67,20 +76,25 @@ class BoardStore extends Store
           scores[player] = 0 unless scores[player]
           scores[player]++
     @setState scores: scores
-    # change to next player
+
+  changeToNextPlayer: ->
     if @state.player == 1
       next_player = 2
     if @state.player == 2
       next_player = 1
+    @setState player: next_player
+    return next_player
 
-    # search next putable grid
+  searchNextPutableGrid: (player)->
     grids = @state.grids
     arounds = _.flatten( [i,j] for i in [-1..1] for j in [-1..1])
 
     for rows in grids
       for grid in rows
-        grid.next = _.any(_.map(arounds, (a) => @searchDirection(next_player, grid, a[0], a[1])))
-    @setState grids: grids, player: next_player
+        grid.next = _.any(_.map(arounds, (a) => @searchDirection(player, grid, a[0], a[1])))
+    @setState grids: grids
+
+  # private
 
   searchDirection: (player, grid, dx, dy) =>
     # check start grid state
