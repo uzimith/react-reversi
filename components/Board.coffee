@@ -11,7 +11,8 @@ module.exports =
 class Board extends React.Component
   render: =>
     jade.compile("""
-      span player
+      h5 Current
+      span player 
       span= player
       table#board
         each rows in grids
@@ -19,5 +20,13 @@ class Board extends React.Component
             each col in rows
               td
                 Grid(grid=col flux=flux)
+      h5 Score
+      each score,player in scores
+        p= "player " + player + ": " + score
+      h5 Control
+      .row
+        a.btn.btn-default(onClick=startGame) Start
+        a.btn.btn-default(onClick=endGame) Give up
     """)(_.assign(@, @props, @state))
-
+  startGame: =>
+    @props.flux.getActions("game").startGame()

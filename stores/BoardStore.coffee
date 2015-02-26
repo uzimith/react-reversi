@@ -10,8 +10,17 @@ class BoardStore extends Store
     super
     gameActions = flux.getActionIds('game')
     @register(gameActions.addPiece, @handleNewPiece)
-    @state = {player: 2}
+    @register(gameActions.startGame, @handleNewGame)
     @num = 8
+    @state =
+      player: 2,
+      player_trait: {1: '◯', 2: '●'},
+      scores: {}
+    @state.grids = _.map [0...@num], (row) =>
+      _.map [0...@num], (col) =>
+        {row: row, col: col, next: false, piece: null}
+
+  handleNewGame: ->
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         piece = null
@@ -20,7 +29,7 @@ class BoardStore extends Store
         if (row is 3 and col is 4) or (row is 4 and col is 3)
           piece = {player: 2}
         {row: row, col: col, next: false, piece: piece}
-    @handleNextTurn() # Warning
+    @handleNextTurn()
   handleNewPiece: (grid) ->
     # add piece
     grids = @state.grids
@@ -29,12 +38,10 @@ class BoardStore extends Store
     # turn the other player's piece
     arounds = _.flatten( [i,j] for i in [-1..1] for j in [-1..1])
 
-    console.log(@state.player)
     _.each arounds, (d) =>
       row = grid.row
       col = grid.col
       dx = d[0]; dy = d[1]
-      console.log(dx,dy)
       found = false
       for i in [0...@num]
         row += dx
@@ -51,6 +58,15 @@ class BoardStore extends Store
     @handleNextTurn()
 
   handleNextTurn: ->
+    # calculate score
+    scores = {}
+    for rows in @state.grids
+      for grid in rows
+        if grid.piece
+          player = grid.piece.player
+          scores[player] = 0 unless scores[player]
+          scores[player]++
+    @setState scores: scores
     # change to next player
     if @state.player == 1
       next_player = 2
