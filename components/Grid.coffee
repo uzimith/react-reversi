@@ -7,11 +7,16 @@ Piece= require('./Piece.coffee')
 module.exports =
 class Grid extends React.Component
   render: =>
+    cx = React.addons.classSet
+    classes = cx {
+      next: @props.grid.next
+    }
     jade.compile("""
-      .grid(onClick=onClick)
+      .grid(class=classes onClick=onClick)
         - if(grid.piece)
           Piece(piece=grid.piece)
     """)(_.assign(@, @props, @state))
   onClick: =>
-    unless @props.piece
-      @props.flux.getActions("game").addPiece(@props.grid)
+    if @props.grid.next
+      player = @props.flux.getStore("board").state.player
+      @props.flux.getActions("game").addPiece(@props.grid, player)

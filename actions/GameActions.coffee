@@ -2,7 +2,7 @@ Actions = require('flummox').Actions
 
 module.exports =
 class GameActions extends Actions
-  addPiece: (grid) ->
+  addPiece: (grid, player) ->
     grid.piece =
-      color: true # TODO: depends player
+      player: player
     grid

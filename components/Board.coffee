@@ -11,6 +11,8 @@ module.exports =
 class Board extends React.Component
   render: =>
     jade.compile("""
+      span player
+      span= player
       table#board
         each rows in grids
           tr
