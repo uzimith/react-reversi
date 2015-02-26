@@ -12,7 +12,6 @@ class Board extends React.Component
   render: =>
     jade.compile("""
       .row
-
         .col-md-2
           .row
             a.btn.btn-default(onClick=startGame) Start

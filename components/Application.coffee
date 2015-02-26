@@ -5,6 +5,7 @@ _ = require('lodash')
 FluxComponent = require('flummox/component')
 
 Board = require('./Board.coffee')
+Room = require('./Room.coffee')
 
 module.exports =
 class Application extends React.Component
@@ -15,6 +16,7 @@ class Application extends React.Component
           .navbar-header
             a.navbar-brand(href="/") Reversi
       .container
+        Room
         FluxComponent(flux=flux connectToStores=['board'])
           Board
     """)(_.assign(@, @props, @state))
