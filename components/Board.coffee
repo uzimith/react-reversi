@@ -29,4 +29,5 @@ class Board extends React.Component
         a.btn.btn-default(onClick=endGame) Give up
     """)(_.assign(@, @props, @state))
   startGame: =>
+    socket.emit('action', action: "startGame", args: null)
     @props.flux.getActions("game").startGame()

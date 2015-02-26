@@ -19,4 +19,5 @@ class Grid extends React.Component
   onClick: =>
     if @props.grid.next
       player = @props.flux.getStore("board").state.player
+      socket.emit('action', action: "addPiece", args: [@props.grid, player])
       @props.flux.getActions("game").addPiece(@props.grid, player)
