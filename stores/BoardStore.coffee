@@ -48,7 +48,9 @@ class BoardStore extends Store
         col += dy
         break unless (0 <= row and row < @num) and (0 <= col and col < @num)
         break if !grids[row][col].piece
-        found = true if grids[row][col].piece.player == @state.player
+        if grids[row][col].piece.player == @state.player
+          found = true
+          break
       if found
         for j in [0..i]
           grids[grid.row + dx*j][grid.col + dy*j].piece.player = @state.player
@@ -56,13 +58,14 @@ class BoardStore extends Store
     # update
     @setState grids: grids
     @calculateScores()
-    next_player = @changeToNextPlayer()
-    @searchNextPutableGrid(next_player)
-
-  handleNextTurn: ->
-    # change to next player
-
-    # search next putable grid
+    next_player = @changeToNextPlayer(@state.player)
+    found = @searchNextPutableGrid(next_player)
+    unless found
+      next_player = @changeToNextPlayer(next_player)
+      found = @searchNextPutableGrid(next_player)
+      unless found
+        console.log("finish game")
+        #Todo: finish game
 
   calculateScores: ->
     scores = {}
@@ -74,10 +77,10 @@ class BoardStore extends Store
           scores[player]++
     @setState scores: scores
 
-  changeToNextPlayer: ->
-    if @state.player == 1
+  changeToNextPlayer: (player)->
+    if player == 1
       next_player = 2
-    if @state.player == 2
+    if player == 2
       next_player = 1
     @setState player: next_player
     return next_player
@@ -85,11 +88,14 @@ class BoardStore extends Store
   searchNextPutableGrid: (player)->
     grids = @state.grids
     arounds = _.flatten( [i,j] for i in [-1..1] for j in [-1..1])
+    found = false
 
     for rows in grids
       for grid in rows
         grid.next = _.any(_.map(arounds, (a) => @searchDirection(player, grid, a[0], a[1])))
+        found = true if grid.next
     @setState grids: grids
+    return found
 
   # private
 
@@ -110,4 +116,4 @@ class BoardStore extends Store
       return false unless (0 <= row and row < @num) and (0 <= col and col < @num)
       return false if !@state.grids[row][col].piece
       return true if @state.grids[row][col].piece and @state.grids[row][col].piece.player == player
-    retun false
+    return false
