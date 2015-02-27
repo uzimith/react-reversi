@@ -15,6 +15,7 @@ io.on 'connection', (socket) ->
       name = (Math.floor(Math.random() * 10) for _ in [0...5]).join("")
       break unless name in Object.keys(io.sockets.adapter.rooms)
     console.log("create : " + name)
+    socket.game_room = name
     socket.join(name)
     socket.emit('join', name)
 
