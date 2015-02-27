@@ -26,7 +26,7 @@ class Application extends React.Component
               Route(show="Board")
                 FluxComponent(flux=flux connectToStores=['board', 'panel'])
                   Board
-            FluxComponent(flux=flux connectToStores=['panel'])
+            FluxComponent(flux=flux connectToStores=['board', 'panel'])
               ResultModal
     """)(_.assign(@, @props, @state))
 

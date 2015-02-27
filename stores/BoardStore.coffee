@@ -12,9 +12,10 @@ class BoardStore extends Store
     @register(gameActions.giveupGame, @handleGiveup)
     @num = 8
     @state =
-      player: 0,
+      player: 0
       scores: {}
-      result: ""
+      winner: 0
+      play: false
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         {row: row, col: col, next: false, piece: null}
@@ -22,7 +23,8 @@ class BoardStore extends Store
   handleNewGame: (player) ->
     @setState
       player: player
-      result: ""
+      winner: 0
+      play: true
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         piece = null
@@ -72,7 +74,16 @@ class BoardStore extends Store
         #Todo: finish game
 
   handleGiveup: (player)->
-    console.log(player)
+    grids = @state.grids
+    for rows in grids
+      for grid in rows
+        grid.next = false
+    winner = @fetchOpponent(player)
+
+    @setState
+      grids: grids
+      winner: winner
+      play: false
 
   # private
 
@@ -86,13 +97,19 @@ class BoardStore extends Store
           scores[player]++
     @setState scores: scores
 
-  changeToNextPlayer: (player)->
+  changeToNextPlayer: (player) ->
     if player == 1
       next_player = 2
     if player == 2
       next_player = 1
     @setState player: next_player
     return next_player
+
+  fetchOpponent: (player) ->
+    if player == 1
+      return 2
+    if player == 2
+      return 1
 
   searchNextPutableGrid: (player)->
     grids = @state.grids
