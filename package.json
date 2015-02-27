@@ -1,8 +1,8 @@
 {
   "name": "react-reversi",
   "version": "0.0.1",
-  "description": "a board game with web",
-  "repository": "http://github.com/uzimith/kokomade",
+  "description": "reversi with web",
+  "repository": "http://github.com/uzimith/react-reversi",
   "main": "app.coffee",
   "scripts": {
     "start": "watchify -o bundle.js -v -d .",

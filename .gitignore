@@ -10,9 +10,7 @@ build/Release
 node_modules
 .sass-cache
 bower_components
-style
 .bundle.js
-bundle.js
 bundle.js.map### https://raw.github.com/github/gitignore/dee587fee0df4dfdaa7a5edd78a746602978344a/Global/OSX.gitignore
 .DS_Store
 .AppleDouble
