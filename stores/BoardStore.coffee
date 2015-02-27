@@ -12,7 +12,6 @@ class BoardStore extends Store
     @num = 8
     @state =
       player: 0,
-      player_trait: {1: '◯', 2: '●'}, # now don't use this
       scores: {}
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>

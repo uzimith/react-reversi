@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "babelify": "^5.0.3",
-    "bluebird": "^2.9.10",
+    "bluebird": "^2.9.12",
     "coffee-script": "^1.9.1",
     "express": "^4.12.0",
     "flummox": "^2.6.2",
