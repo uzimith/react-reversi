@@ -1,8 +1,6 @@
 React = require('react')
 Store = require('flummox').Store
 _ = require('lodash')
-window._ = require('lodash')
-
 
 module.exports =
 class BoardStore extends Store

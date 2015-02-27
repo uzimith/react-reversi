@@ -1,16 +1,30 @@
+$navbar-default-bg: #000
+$navbar-default-border: lighten($navbar-default-bg, 6.5%)
+$navbar-default-link-color: #fff
+// $gray-base: #fff
 @import ../bower_components/bootstrap-sass/assets/stylesheets/bootstrap
 
+
+body
+  background: image-url("retina_wood.png")
 #board
-  td
-    $length: 30px
-    width: $length
-    height: $length
-    border: 1px solid #000
-    font-size: $length
-    line-height: $length
-    text-align: center
+  background: image-url("board.jpg")
+  width: image-width("board.jpg")
+  height: image-height("board.jpg")
+  padding: 7px
+  .col
     .grid
-      width: $length
-      height: $length
+      width: 65px
+      height: 64px
+      float: left
+      .piece
+        width: 56px
+        height: 56px
+        background: image-url("pieces.png")
+        margin: 5px auto
+        &.piece1
+          background-position: 0 0
+        &.piece2
+          background-position: 56px 0
       &.next
-        background: #aaa
+        background: rgba(0,0,0,0.5)

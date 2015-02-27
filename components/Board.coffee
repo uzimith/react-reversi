@@ -12,7 +12,7 @@ class Board extends React.Component
   render: =>
     jade.compile("""
       .row
-        .col-md-2
+        .col-md-2.col-md-offset-2
           .row
             a.btn.btn-default(onClick=startGame) Start
             a.btn.btn-default(onClick=endGame) Give up
@@ -22,12 +22,12 @@ class Board extends React.Component
           h5 Score
           each score,player in scores
             p= "player " + player + ": " + score
-        .col-md-10
-          table#board
+        .col-md-8
+          #board
             each rows in grids
-              tr
+              .clearfix
                 each col in rows
-                  td
+                  .col
                     Grid(grid=col flux=flux)
     """)(_.assign(@, @props, @state))
   startGame: =>
