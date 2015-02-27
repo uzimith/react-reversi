@@ -11,9 +11,14 @@ class Room extends React.Component
   render: =>
     jade.compile("""
     h3 Room
-    h4 Join
       .row
         .col-md-2
+          hr
+          form(onSubmit=onCreateForm)
+            input.btn.btn-default(type="submit" value="Create")
+      .row
+        .col-md-2
+          hr
           form(onSubmit=onJoinForm)
             input.form-control(type="text" value=roomId onChange=handleRoomId)
             input.btn.btn-default(type="submit" value="Join")
@@ -22,8 +27,12 @@ class Room extends React.Component
   handleRoomId: (e) =>
     @setState roomId: e.target.value
 
+  onCreateForm: (e) =>
+    e.preventDefault()
+    socket.emit("create")
+    @props.flux.getActions("panel").createBoard()
   onJoinForm: (e) =>
     e.preventDefault()
     if @state.roomId
       socket.emit("join", @state.roomId)
-      @props.flux.getActions("panel").moveToBoard()
+      @props.flux.getActions("panel").joinBoard()
