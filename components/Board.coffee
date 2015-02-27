@@ -10,18 +10,40 @@ Piece = require('./Piece.coffee')
 module.exports =
 class Board extends React.Component
   render: =>
+
+    cx = React.addons.classSet
+    player_class =
+      1: cx({ player1: true, low: @props.scores[1] < 10, middle: @props.scores[1] in [10..30], high: @props.scores[1] > 30})
+      2: cx({ player2: true, low: @props.scores[2] < 10, middle: @props.scores[2] in [10..30], high: @props.scores[2] > 10})
     jade.compile("""
       .row
         .col-md-2.col-md-offset-2
           .row
-            a.btn.btn-default(onClick=startGame) Start
-            a.btn.btn-default(onClick=endGame) Give up
-          h5 Current
-          span player 
-          span= player
-          h5 Score
-          each score,player in scores
-            p= "player " + player + ": " + score
+            a.control.btn.btn-default(onClick=startGame) Start
+            a.control.btn.btn-default(onClick=endGame) Give up
+
+          hr
+
+          table.table.table-bordered.back
+            tbody
+              tr
+                th Room
+                td= roomId
+              tr(class=player_class[player])
+                th Current
+                td= player
+
+          table.table.table-bordered.back
+            thead
+              tr
+                th #
+                th Score
+            tbody
+              each score,player in scores
+                tr(class=player_class[player])
+                  td.player= "player " + player
+                  td.score= score
+
         .col-md-8
           #board
             each rows in grids

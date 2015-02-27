@@ -23,7 +23,7 @@ class Application extends React.Component
                   Room
             FluxComponent(flux=flux connectToStores=['panel'])
               Route(show="Board")
-                FluxComponent(flux=flux connectToStores=['board'])
+                FluxComponent(flux=flux connectToStores=['board', 'panel'])
                   Board
     """)(_.assign(@, @props, @state))
 
