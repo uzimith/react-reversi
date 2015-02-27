@@ -10,6 +10,7 @@ class PanelActions extends Store
     gameActions = flux.getActionIds('game')
     @register(panelActions.joinBoard, @joinBoard)
     @register(panelActions.createBoard, @createBoard)
+    @register(panelActions.hideResult, @hideResultModal)
     @register(gameActions.giveupGame, @showResultModal)
     @state =
       showBoard: false
@@ -38,3 +39,7 @@ class PanelActions extends Store
         showRoom: false
         roomId: name
       }
+  showResultModal: ->
+    @setState showResult: true
+  hideResultModal: ->
+    @setState showResult: false

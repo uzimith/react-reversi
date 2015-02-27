@@ -9,16 +9,20 @@ class BoardStore extends Store
     gameActions = flux.getActionIds('game')
     @register(gameActions.addPiece, @handleNewPiece)
     @register(gameActions.startGame, @handleNewGame)
+    @register(gameActions.giveupGame, @handleGiveup)
     @num = 8
     @state =
       player: 0,
       scores: {}
+      result: ""
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         {row: row, col: col, next: false, piece: null}
 
   handleNewGame: (player) ->
-    @setState player: player
+    @setState
+      player: player
+      result: ""
     @state.grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         piece = null
@@ -67,6 +71,11 @@ class BoardStore extends Store
         console.log("finish game")
         #Todo: finish game
 
+  handleGiveup: (player)->
+    console.log(player)
+
+  # private
+
   calculateScores: ->
     scores = {}
     for rows in @state.grids
@@ -96,8 +105,6 @@ class BoardStore extends Store
         found = true if grid.next
     @setState grids: grids
     return found
-
-  # private
 
   searchDirection: (player, grid, dx, dy) =>
     # check start grid state

@@ -7,6 +7,7 @@ FluxComponent = require('flummox/component')
 Board = require('./Board.coffee')
 Room = require('./Room.coffee')
 Route = require('./Route.coffee')
+ResultModal = require('./ResultModal.coffee')
 
 module.exports =
 class Application extends React.Component
@@ -25,5 +26,7 @@ class Application extends React.Component
               Route(show="Board")
                 FluxComponent(flux=flux connectToStores=['board', 'panel'])
                   Board
+            FluxComponent(flux=flux connectToStores=['panel'])
+              ResultModal
     """)(_.assign(@, @props, @state))
 

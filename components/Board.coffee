@@ -20,7 +20,7 @@ class Board extends React.Component
         .col-md-2.col-md-offset-2
           .row
             a.control.btn.btn-default(onClick=startGame) Start
-            a.control.btn.btn-default(onClick=endGame) Give up
+            a.control.btn.btn-default(onClick=giveupGame) Give up
 
           hr
 
@@ -55,3 +55,7 @@ class Board extends React.Component
   startGame: =>
     socket.emit('action', action: "startGame", args: [2])
     @props.flux.getActions("game").startGame(2)
+  giveupGame: =>
+    player = @props.flux.getStore("board").state.player
+    socket.emit('action', action: "giveupGame", args: [player])
+    @props.flux.getActions("game").giveupGame(player)

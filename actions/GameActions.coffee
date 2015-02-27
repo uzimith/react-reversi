@@ -6,8 +6,8 @@ class GameActions extends Actions
     player
   endGame: ->
     null
-  giveupGame: ->
-    null
+  giveupGame: (player)->
+    player
   addPiece: (grid, player) ->
     grid.piece =
       player: player

@@ -6,3 +6,5 @@ class PanelActions extends Actions
     null
   createBoard: ->
     null
+  hideResult: ->
+    null
