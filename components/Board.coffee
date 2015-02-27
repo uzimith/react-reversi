@@ -16,6 +16,7 @@ class Board extends React.Component
       2: cx({ player2: true, low: @props.scores[2] < 10, middle: @props.scores[2] in [10..30], high: @props.scores[2] > 30})
     start_classes  = cx show: !@props.play, hide:  @props.play
     giveup_classes = cx show:  @props.play, hide: !@props.play
+    end_classes    = cx show:  @props.end, hide: !@props.end
 
     jade.compile("""
       .row
@@ -23,6 +24,7 @@ class Board extends React.Component
           .row
             a.control.btn.btn-default(class=start_classes onClick=startGame) Start
             a.control.btn.btn-default(class=giveup_classes onClick=giveupGame) Give up
+            a.control.btn.btn-default(class=end_classes onClick=endGame) End
 
           hr
 
@@ -61,3 +63,6 @@ class Board extends React.Component
     player = @props.flux.getStore("board").state.player
     socket.emit('action', action: "giveupGame", args: [player])
     @props.flux.getActions("game").giveupGame(player)
+  endGame: =>
+    socket.emit('action', action: "endGame", args: [])
+    @props.flux.getActions("game").endGame()

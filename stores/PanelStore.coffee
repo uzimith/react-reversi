@@ -12,6 +12,7 @@ class PanelActions extends Store
     @register(panelActions.createBoard, @createBoard)
     @register(panelActions.hideResult, @hideResultModal)
     @register(gameActions.giveupGame, @showResultModal)
+    @register(gameActions.endGame, @showResultModal)
     @state =
       showBoard: false
       showRoom: true
