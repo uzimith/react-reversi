@@ -26,3 +26,4 @@ class Room extends React.Component
     e.preventDefault()
     if @state.roomId
       socket.emit("join", @state.roomId)
+      @props.flux.getActions("panel").moveToBoard()

@@ -11,6 +11,7 @@ io.on 'connection', (socket) ->
     console.log("join : " + name)
     socket.game_room = name
     socket.join(name)
+    socket.emit('join', name)
   socket.on 'leave', (name) ->
     socket.leave(name)
   socket.on 'action', (data) ->
