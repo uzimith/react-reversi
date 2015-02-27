@@ -14,7 +14,7 @@ class Board extends React.Component
     cx = React.addons.classSet
     player_class =
       1: cx({ player1: true, low: @props.scores[1] < 10, middle: @props.scores[1] in [10..30], high: @props.scores[1] > 30})
-      2: cx({ player2: true, low: @props.scores[2] < 10, middle: @props.scores[2] in [10..30], high: @props.scores[2] > 10})
+      2: cx({ player2: true, low: @props.scores[2] < 10, middle: @props.scores[2] in [10..30], high: @props.scores[2] > 30})
     jade.compile("""
       .row
         .col-md-2.col-md-offset-2
