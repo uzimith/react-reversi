@@ -24,23 +24,17 @@ class PanelActions extends Store
       showRoom: false
     }
     socket.on 'join', (name) =>
-      @setState {
-        showBoard: true
-        showRoom: false
-        roomId: name
-      }
-  joinBoard: ->
+      location.href = name
+
+  joinBoard: (name) ->
     @setState {
-      showBoard: false
+      showBoard: true
       showRoom: false
+      roomId: name
     }
-    socket.on 'join', (name) =>
-      @setState {
-        showBoard: true
-        showRoom: false
-        roomId: name
-      }
+
   showResultModal: ->
     @setState showResult: true
+
   hideResultModal: ->
     @setState showResult: false

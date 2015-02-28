@@ -57,12 +57,9 @@ class Board extends React.Component
                     Grid(grid=col flux=flux)
     """)(_.assign(@, @props, @state))
   startGame: =>
-    socket.emit('action', action: "startGame", args: [2])
-    @props.flux.getActions("game").startGame(2)
+    socket.push('action', action: "startGame", args: [2])
   giveupGame: =>
     player = @props.flux.getStore("board").state.player
-    socket.emit('action', action: "giveupGame", args: [player])
-    @props.flux.getActions("game").giveupGame(player)
+    socket.push('action', action: "giveupGame", args: [player])
   endGame: =>
-    socket.emit('action', action: "endGame", args: [])
-    @props.flux.getActions("game").endGame()
+    socket.push('action', action: "endGame", args: [])
