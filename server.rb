@@ -20,7 +20,6 @@ io = Sinatra::RocketIO
 
 io.on 'connect' do |client|
   puts 'a user connected'
-  p client
 end
 
 io.on 'disconnect' do |client|
@@ -41,7 +40,6 @@ io.on "join" do |name, client|
 end
 
 io.on "action" do |data, client|
-  puts "action"
   p data
   io.push :action, data, channel: client.channel
 end
