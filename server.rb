@@ -9,7 +9,6 @@ if development?
   require 'sinatra/reloader'
   set :bind, '0.0.0.0'
   set :port, 3000
-  # set :logging, nil
 end
 
 get '/*' do |channel|
@@ -45,5 +44,4 @@ io.on "action" do |data, client|
   puts "action"
   p data
   io.push :action, data, channel: client.channel
-  # io.push :action, data, to: client.session
 end
