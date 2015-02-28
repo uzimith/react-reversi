@@ -32,7 +32,7 @@ class ResultModal extends React.Component
                     th Score
                 tbody
                   each score,player in scores
-                    tr(class=player_class[player])
+                    tr(class=player_class[player] key=player)
                       td.player= "player " + player
                       td.score= score
             .modal-footer

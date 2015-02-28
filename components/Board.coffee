@@ -44,16 +44,16 @@ class Board extends React.Component
                 th Score
             tbody
               each score,player in scores
-                tr(class=player_class[player])
+                tr(class=player_class[player] key=index)
                   td.player= "player " + player
                   td.score= score
 
         .col-md-8
           #board
-            each rows in grids
-              .clearfix
-                each col in rows
-                  .col
+            each rows,index in grids
+              .clearfix(key=index)
+                each col,index in rows
+                  .col(key=index)
                     Grid(grid=col flux=flux)
     """)(_.assign(@, @props, @state))
   startGame: =>
