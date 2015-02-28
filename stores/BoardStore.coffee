@@ -23,21 +23,24 @@ class BoardStore extends Store
         {row: row, col: col, next: false, piece: null}
 
   handleNewGame: (player) ->
-    @setState
-      player: player
-      winner: 0
-      play: true
-      end: false
-    @state.grids = _.map [0...@num], (row) =>
+    grids = _.map [0...@num], (row) =>
       _.map [0...@num], (col) =>
         piece = null
         if (row is 3 and col is 3) or (row is 4 and col is 4)
           piece = {player: 1}
         if (row is 3 and col is 4) or (row is 4 and col is 3)
           piece = {player: 2}
-        {row: row, col: col, next: false, piece: piece}
-    @calculateScores()
-    @searchNextPutableGrid(player)
+        {row: row, col: col, next: true, piece: piece}
+    # update
+    scores = @calculateScores()
+    [grids, found] = @searchNextPutableGrid(grids, player)
+    @setState
+      grids: grids
+      scores: scores
+      player: player
+      winner: 0
+      play: true
+      end: false
 
   handleNewPiece: (grid) ->
     # add piece
@@ -65,15 +68,21 @@ class BoardStore extends Store
           grids[grid.row + dx*j][grid.col + dy*j].piece.player = @state.player
 
     # update
-    @setState grids: grids
-    @calculateScores()
-    next_player = @changeToNextPlayer(@state.player)
-    found = @searchNextPutableGrid(next_player)
+    scores = @calculateScores()
+    end = false
+    next_player = @fetchNextPlayer(@state.player)
+    [grids, found] = @searchNextPutableGrid(grids, next_player)
     unless found
-      next_player = @changeToNextPlayer(next_player)
-      found = @searchNextPutableGrid(next_player)
+      next_player = @fetchNextPlayer(next_player)
+      [grids, found] = @searchNextPutableGrid(grids, next_player)
       unless found
-        @setState end: true
+        end = true
+    console.log(next_player)
+    @setState
+      grids: grids
+      player: next_player
+      scores: scores
+      end: end
 
   handleEndGame: ->
     grids = @state.grids
@@ -109,15 +118,13 @@ class BoardStore extends Store
           player = grid.piece.player
           scores[player] = 0 unless scores[player]
           scores[player]++
-    @setState scores: scores
+    return scores
 
-  changeToNextPlayer: (player) ->
+  fetchNextPlayer: (player) ->
     if player == 1
-      next_player = 2
+      return 2
     if player == 2
-      next_player = 1
-    @setState player: next_player
-    return next_player
+      return 1
 
   fetchOpponent: (player) ->
     if player == 1
@@ -125,19 +132,17 @@ class BoardStore extends Store
     if player == 2
       return 1
 
-  searchNextPutableGrid: (player)->
-    grids = @state.grids
+  searchNextPutableGrid: (grids, player)->
     arounds = _.flatten( [i,j] for i in [-1..1] for j in [-1..1])
     found = false
 
     for rows in grids
       for grid in rows
-        grid.next = _.any(_.map(arounds, (a) => @searchDirection(player, grid, a[0], a[1])))
+        grid.next = _.any(_.map(arounds, (a) => @searchDirection(player, grids, grid, a[0], a[1])))
         found = true if grid.next
-    @setState grids: grids
-    return found
+    return [grids, found]
 
-  searchDirection: (player, grid, dx, dy) =>
+  searchDirection: (player, grids, grid, dx, dy) =>
     # check start grid state
     return false if grid.piece
 
@@ -145,13 +150,13 @@ class BoardStore extends Store
     row = grid.row + dx
     col = grid.col + dy
     return false unless (0 <= row and row < @num) and (0 <= col and col < @num)
-    return false if !@state.grids[row][col].piece or @state.grids[row][col].piece.player == player
+    return false if !grids[row][col].piece or grids[row][col].piece.player == player
 
     # search player piece
     for i in [0...@num - 2]
       row += dx
       col += dy
       return false unless (0 <= row and row < @num) and (0 <= col and col < @num)
-      return false if !@state.grids[row][col].piece
-      return true if @state.grids[row][col].piece and @state.grids[row][col].piece.player == player
+      return false if !grids[row][col].piece
+      return true if grids[row][col].piece and grids[row][col].piece.player == player
     return false
