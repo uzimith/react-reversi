@@ -91,6 +91,9 @@ class BoardStore extends Store
         grid.next = false
     winner = _.max _.keys(@state.scores), ((key) => @state.scores[key])
 
+    # draw
+    winner = 0 if @state.scores[0] is @state.scores[1]
+
     @setState
       grids: grids
       winner: winner

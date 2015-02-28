@@ -37,8 +37,11 @@ class ResultModal extends React.Component
                       td.score= score
             .modal-footer
               h4.winner
-                span Winner : 
-                span.result(class=player_class[winner])= "Player " + winner
+                if player === 0
+                  span Draw
+                else
+                  span Winner : 
+                  span.result(class=player_class[winner])= "Player " + winner
 
     """)(_.assign(@, @props, @state))
 
